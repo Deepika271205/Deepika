@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OvenCraft Pizza </title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #fff;
+    }
+    header {
+  background: url('1.jpg') no-repeat center center/cover;
+  height: 200px; 
+  padding: 1rem 2rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+header img {
+  height: 80px;
+}
+
+    nav a {
+      color: #fff;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .page-section {
+      display: none;
+      padding: 2rem;
+    }
+    .hero {
+      background: url('https://images.unsplash.com/photo-1601924582975-4cc8c2402dfb') no-repeat center center/cover;
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .hero h2 {
+      font-size: 3rem;
+      color: #ffc107;
+      text-shadow: 2px 2px #000;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+    }
+    .btn {
+      padding: 0.8rem 1.5rem;
+      background-color: #ffc107;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #000;
+      font-weight: bold;
+    }
+    .menu h2, .offers h2, .about h2, .contact h2, .cart h2, .checkout h2, .confirmation h2 {
+      color: #ffc107;
+      margin-bottom: 1rem;
+    }
+    .pizza-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .pizza-card {
+      background-color: #1f1f1f;
+      border: 1px solid #333;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    .pizza-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #000;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      background-color: #2c2c2c;
+      border: 1px solid #555;
+      color: #fff;
+    }
+    .cart-item, .checkout-summary {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <img src="logo.png" alt="OvenCraft Pizza Logo" style="height:80px;">
+  <nav>
+    <a onclick="showSection('home')">Home</a>
+    <a onclick="showSection('menu')">Menu</a>
+    <a onclick="showSection('offers')">Offers</a>
+    <a onclick="showSection('about')">About</a>
+    <a onclick="showSection('contact')">Contact</a>
+    <a onclick="showSection('cart')">Cart 🛒 (<span id="cart-count">0</span>)</a>
+  </nav>
+</header>
+
+  <section class="hero page-section" id="home">
+    <h2>Wood-Fired Goodness at Your Doorstep</h2>
+    <p>Hot, fresh, and delicious pizzas delivered fast!</p>
+    <button class="btn" onclick="showSection('menu')">Order Now</button>
+  </section>
+
+  <section class="menu page-section" id="menu">
+  <h2>🍕 Our Menu</h2>
+
+  <h3 style="color:#4caf50;">🌱 Veg Pizzas</h3>
+  <div class="pizza-grid" id="veg-pizza-list"></div>
+
+  <h3 style="color:#f44336; margin-top:2rem;">🍗 Non-Veg Pizzas</h3>
+  <div class="pizza-grid" id="nonveg-pizza-list"></div>
+</section>
+
+  <section class="cart page-section" id="cart">
+    <h2>🛒 Your Cart</h2>
+    <div id="cart-items"></div>
+    <p><strong>Total:</strong> ₹<span id="cart-total">0</span></p>
+    <button class="btn" onclick="showSection('checkout')">Proceed to Checkout</button>
+  </section>
+
+  <section class="checkout page-section" id="checkout">
+    <h2>📦 Checkout</h2>
+    <form id="checkout-form">
+      <input type="text" placeholder="Name" required>
+      <input type="tel" placeholder="Phone Number" required>
+      <textarea placeholder="Full Address" required></textarea>
+      <textarea placeholder="Delivery Instructions (Optional)"></textarea>
+      <select required>
+        <option value="">Select Payment Method</option>
+        <option value="cod">Cash on Delivery</option>
+        <option value="upi">UPI</option>
+      </select>
+      <button type="submit" class="btn">Place Order</button>
+    </form>
+  </section>
+
+  <section class="confirmation page-section" id="confirmation">
+    <h2>✅ Order Confirmed!</h2>
+    <p>Thank you for your order. Order #<span id="order-id"></span></p>
+    <p>Estimated delivery time: 30-40 mins</p>
+    <button class="btn" onclick="showSection('home')">Back to Home</button>
+  </section>
+
+  <section class="offers page-section" id="offers">
+    <h2>📣 Special Offers</h2>
+    <ul>
+        <li>🍕 Buy 1 Get 1 Free every Wednesday</li>
+        <li>🥤 Free Drink with Every Large Pizza</li>
+        <li>🎉 Flat 20% Off on Your First Online Order</li>
+        <li>🛵 Free Delivery on Orders Above ₹499</li>
+        <li>🍽 Family Combo: 2 Large Pizzas + 1 Garlic Bread + 2 Drinks at ₹999</li>
+        <li>💳 10% Cashback on Payments via Credit/Debit Cards</li>
+        <li>🔥 Weekend Special: Any 3 Medium Pizzas for ₹799</li>
+        <li>📦 Student Offer: 15% Off with Valid Student ID</li>
+    </ul>
+</section>
+
+  <section class="about page-section" id="about">
+    <h2>👨‍🍳 About Us</h2>
+    <p>Welcome to OvenCraft Pizza — where every slice tells a story! We are a passionate team of pizza lovers dedicated to serving you mouthwatering pizzas made with the freshest ingredients, authentic recipes, and our signature secret sauces.</p>
+    <p>Our journey began with a simple dream: to bring the warmth of a traditional brick oven and the comfort of home-style cooking to your plate. From hand-kneaded dough to farm-fresh vegetables and premium cheeses, we never compromise on quality.</p>
+    <p>We believe pizza is more than just food — it’s a celebration of flavors, a reason to gather with friends and family, and a comfort on any day of the week. Every pizza we serve is crafted with love, baked to perfection, and delivered hot to your doorstep.</p>
+    <p>Whether you're here for a quick bite, a family meal, or a late-night craving, OvenCraft Pizza promises a delicious experience you’ll never forget.</p>
+</section>
+
+  <section class="contact page-section" id="contact">
+    <h2>📍 Contact & Location</h2>
+    <p>📞 Phone: +91 7339394398 | ✉️ Email: Ovencraftpizza@gmail.com</p>
+    <p>🕒 Open Hours: 09:00 AM - 11:00 PM (Mon-Sun)</p>
+    <p>💬 For Reservations or Catering Services, Call Us Anytime!</p>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1975246.0487830055!2d77.0!3d10.8!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba85c0dfdbfd5f5%3A0xa7444f4e666a7f87!2sTamil%20Nadu!5e0!3m2!1sen!2sin!4v1697111223334!5m2!1sen!2sin" 
+    width="100%"  width="100%" height="500" style="border:0;border-radius:10px;"  allowfullscreen="" loading="lazy"></iframe>
+</section>
+
+
+  <footer class="footer">
+    <p>&copy; 2025 Pizza Palace | Terms | Privacy | Follow us: 👉 Facebook | Instagram | Twitter</p>
+  </footer>
+
+  <script>
+const pizzas = [
+  // Veg
+  {name: "Margherita", price: 199, image: "2.jpg", type: "veg"},
+  {name: "Farmhouse", price: 299, image: "3.webp", type: "veg"},
+  {name: "Peppy Paneer", price: 349, image: "4.webp", type: "veg"},
+  {name: "Veggie Delight", price: 279, image:"5.avif", type: "veg"},
+  {name: "Cheese Burst", price: 269, image: "6.avif", type: "veg"},
+  {name: "Mexican Green Wave", price: 319, image: "7.jpg", type: "veg"},
+  {name: "Italian Veg", price: 289, image: "8.jpg", type: "veg"},
+
+  // Non-Veg
+  {name: "Chicken Fiesta", price: 379, image: "9.jpg", type: "nonveg"},
+  {name: "Tandoori Chicken", price: 399, image: "10.webp", type: "nonveg"},
+  {name: "Spicy Triple Tango", price: 359, image: "11.webp", type: "nonveg"},
+  {name: "Pepper Barbecue Chicken", price: 389, image: "12.jpg", type: "nonveg"},
+  {name: "Peri-Peri Chicken", price: 409, image: "13.jpg", type: "nonveg"},
+  {name: "Chicken Dominator", price: 449, image: "14.jpg", type: "nonveg"},
+  {name: "Chicken Golden Delight", price: 399, image: "15.jpg", type: "nonveg"},
+  {name: "Chicken Mexicana", price: 419, image: "16.jpeg", type: "nonveg"}
+];
+
+let cart = []; // ✅ Declare cart globally
+
+function renderMenu() {
+  const vegList = document.getElementById("veg-pizza-list");
+  const nonvegList = document.getElementById("nonveg-pizza-list");
+
+  pizzas.forEach((pizza, index) => {
+    const card = document.createElement("div");
+    card.className = "pizza-card";
+    card.innerHTML = `
+      <img src="${pizza.image}" alt="${pizza.name}" />
+      <h3>${pizza.name}</h3>
+      <p>Price: ₹${pizza.price}</p>
+      <input type="number" value="1" min="1" id="qty-${index}" />
+      <button class="btn" onclick="addToCart(${index})">Add to Cart</button>
+    `;
+    if (pizza.type === "veg") {
+      vegList.appendChild(card);
+    } else {
+      nonvegList.appendChild(card);
+    }
+  });
+}
+
+function saveCartToLocalStorage() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function loadCartFromLocalStorage() {
+  const saved = localStorage.getItem("cart");
+  if (saved) {
+    cart = JSON.parse(saved);
+  }
+}
+
+function addToCart(index) {
+  const qty = parseInt(document.getElementById(`qty-${index}`).value);
+  const existingIndex = cart.findIndex(item => item.name === pizzas[index].name);
+
+  if (existingIndex > -1) {
+    cart[existingIndex].quantity += qty;
+  } else {
+    const item = { ...pizzas[index], quantity: qty };
+    cart.push(item);
+  }
+
+  saveCartToLocalStorage();
+  updateCart();
+}
+
+function updateCart() {
+  const cartItems = document.getElementById("cart-items");
+  const cartCount = document.getElementById("cart-count");
+  const cartTotal = document.getElementById("cart-total");
+
+  cartItems.innerHTML = "";
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price * item.quantity;
+    cartItems.innerHTML += `
+      <div class="cart-item">
+        ${item.quantity} x ${item.name} = ₹${item.price * item.quantity}
+        <button onclick="removeFromCart(${index})" style="margin-left:10px;background:red;color:white;border:none;padding:4px 8px;cursor:pointer;">
+          Remove
+        </button>
+      </div>
+    `;
+  });
+
+  cartCount.textContent = cart.length;
+  cartTotal.textContent = total;
+
+  saveCartToLocalStorage();
+}
+function removeFromCart(index) {
+  cart.splice(index, 1); // Remove 1 item at the given index
+  saveCartToLocalStorage();
+  updateCart();
+}
+
+// ✅ Checkout handler
+document.getElementById("checkout-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const name = this.querySelector("input[placeholder='Name']").value;
+  const phone = this.querySelector("input[placeholder='Phone Number']").value;
+  const address = this.querySelector("textarea[placeholder='Full Address']").value;
+  const instructions = this.querySelector("textarea[placeholder='Delivery Instructions (Optional)']").value;
+  const payment = this.querySelector("select").value;
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  fetch("save.php", {  // ✅ Fixed filename
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, phone, address, instructions, payment, cart, total })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === "success") {
+      cart = [];
+      localStorage.removeItem("cart");
+      updateCart();
+      document.getElementById("order-id").textContent = data.order_id;
+      showSection("confirmation");
+    } else {
+      alert("Order Failed: " + data.message);
+    }
+  })
+  .catch(err => {
+  console.error("Fetch error:", err);
+  alert("Error placing order: " + err.message);
+});
+});
+
+// ✅ Single onload
+window.onload = function () {
+  renderMenu();
+  loadCartFromLocalStorage();
+  updateCart();
+  showSection("home");
+};
+
+function showSection(id) {
+  document.querySelectorAll(".page-section").forEach(section => {
+    section.style.display = "none";
+  });
+  const active = document.getElementById(id);
+  if (active) active.style.display = "block";
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
